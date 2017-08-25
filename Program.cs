@@ -1,4 +1,5 @@
 ﻿using System;
+using PushSharp;
 using PushSharp.Apple;
 using Newtonsoft.Json.Linq;
 
@@ -10,13 +11,12 @@ namespace pushSharpTest
         static void Main(string[] args)
         {
             SendiOS();
-            Console.WriteLine("Hello World!");
         }
 
         static void SendiOS() {
             // Configuration (NOTE: .pfx can also be used here)
             var config = new ApnsConfiguration (ApnsConfiguration.ApnsServerEnvironment.Sandbox, 
-                "Certificados.p12", "!Ulises31@2011");
+                "PushSharp-Sandbox.p12", "!Ulises31@2011");
 
             // Create a new broker
             var apnsBroker = new ApnsServiceBroker (config);
@@ -53,13 +53,14 @@ namespace pushSharpTest
             apnsBroker.Start ();
 
             var MY_DEVICE_TOKENS = new string[1];
-            MY_DEVICE_TOKENS[0] = "E3C13E2E406307D0FF74494949AF13AD1DC896F751ABCEE0EC72152C19727689";
+            MY_DEVICE_TOKENS[0] = "8EB31300771663950212827E212F7B7FB2B34CA26A2D4F3927AC37E5F7E5DB15";
+            // MY_DEVICE_TOKENS[1] = "55EE2DF878CAB0D9A0C3B679C9722CC6E600B86AEDF71CDD853FB4CC5AEC9718";
 
             foreach (var deviceToken in MY_DEVICE_TOKENS) {
                 // Queue a notification to send
                 apnsBroker.QueueNotification (new ApnsNotification {
                     DeviceToken = deviceToken,
-                    Payload = JObject.Parse ("{\"aps\":{\"badge\":7}}")
+                    Payload = JObject.Parse ("{\"aps\":{\"badge\":90,\"alert\":\"Jerónimo!!\", \"sound\":\"default\"}}")
                 });
             }
             
