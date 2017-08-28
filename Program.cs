@@ -13,12 +13,12 @@ namespace pushSharpTest
 {
     class Program
     {
-        private static string DeviceID = "fn3wAWzzl-A:APA91bEka9Z1L-nEhoyCcQF2GihXfApKSNTu0o5xbWVOc4ZYEjUAMVjFeehFMbf5XyAHQQXm4CRW29BIOeT47DoMRNeDMJM78ZIVW_UIIRfFRnu8nM6OGCfYhzuITIHhP_9CXA8KjnjD";
-        private static string SENDER_ID = "849171215333";
-        private static string applicationID = "AAAAxbaMc-U:APA91bHWvs9VG3dU3iS53Pv8akXSa9Q5dcB_LcoQEkbDTvzmzZH_vBYpozyk1nujEJmPyfl-QXhsYtA2boFcfye4ahLDaajoQEsje3t6VKoCrxzgUgMUIGxKOq4ZuiXjZpcU_AZZMi0x";
-        private static string firebaseUrl = "https://android.googleapis.com/gcm/send";
-        // private static string firebaseUrl = "https://android.googleapis.com/gcm/notification";
-        // private static string firebaseUrl = "https://fcm.googleapis.com/fcm/send";
+
+        private static string DeviceID = "c8XLbUVxFbA:APA91bETeDNng_CNKzypyFVa0AlSJPjWoOWtB1e0d92vZDiwWYcWWUzr6Mw0XZmDCQI1m_tIx0jjdNmZC_u3YaLeJLSqUKrn0lcwfEmdWr4EC9JEYDYiSZyBkhZ1M5vumlMNDheEQdmv";
+        // private static string SENDER_ID = "849171215333";
+        private static string applicationID = "AAAA4qLXWQI:APA91bHcdacnEUcB-3F-vR3NpvlkTK7ccxTZWocWY4a3UgngNHd0nFyWkJXWs0i4H5gCPXFS_JGt65Pdz9fTLayeoN9VFxwzJC7svqCrfkMP9Uc6us0WlsbsnnIFbhAnrjFSXDpSBys0";
+
+        private static string firebaseUrl = "https://fcm.googleapis.com/fcm/send";
         
         static void Main(string[] args)
         {
@@ -27,49 +27,49 @@ namespace pushSharpTest
             // send();
         }
 
-        static void send()
-            {                
-                var value = "Pruebaaaaa";
-                WebRequest tRequest;
+        // static void send()
+            // {                
+            //     var value = "Pruebaaaaa";
+            //     WebRequest tRequest;
 
-                tRequest = WebRequest.Create(firebaseUrl);
-                tRequest.Method = "post";
-                tRequest.ContentType = " application/x-www-form-urlencoded;charset=UTF-8";
-                tRequest.Headers.Add(string.Format("Authorization: key={0}", applicationID));
+            //     tRequest = WebRequest.Create(firebaseUrl);
+            //     tRequest.Method = "post";
+            //     tRequest.ContentType = " application/x-www-form-urlencoded;charset=UTF-8";
+            //     tRequest.Headers.Add(string.Format("Authorization: key={0}", applicationID));
 
-                tRequest.Headers.Add(string.Format("Sender: id={0}", SENDER_ID));
+            //     tRequest.Headers.Add(string.Format("Sender: id={0}", SENDER_ID));
 
-                // string postData = "{ 'registration_id': [ '" + DeviceID + "' ], 'data': {'message': '" + txtMsg.Text + "'}}";
-                //string postData = "collapse_key=score_update&time_to_live=108&delay_while_idle=1&data.message=" + value + "&data.time=" + System.DateTime.Now.ToString() + "&registration_id=" + DeviceID + "";
-                string collaspeKey = Guid.NewGuid().ToString("n");
-                string postData=string.Format("registration_id={0}&data.payload={1}&collapse_key={2}", DeviceID, "Pickup Message" + DateTime.Now.ToString(), collaspeKey);
+            //     // string postData = "{ 'registration_id': [ '" + DeviceID + "' ], 'data': {'message': '" + txtMsg.Text + "'}}";
+            //     //string postData = "collapse_key=score_update&time_to_live=108&delay_while_idle=1&data.message=" + value + "&data.time=" + System.DateTime.Now.ToString() + "&registration_id=" + DeviceID + "";
+            //     string collaspeKey = Guid.NewGuid().ToString("n");
+            //     string postData=string.Format("registration_id={0}&data.payload={1}&collapse_key={2}", DeviceID, "Pickup Message" + DateTime.Now.ToString(), collaspeKey);
 
-                Console.WriteLine(postData);
-                Byte[] byteArray = Encoding.UTF8.GetBytes(postData);
-                tRequest.ContentLength = byteArray.Length;
+            //     Console.WriteLine(postData);
+            //     Byte[] byteArray = Encoding.UTF8.GetBytes(postData);
+            //     tRequest.ContentLength = byteArray.Length;
 
-                Stream dataStream = tRequest.GetRequestStream();
-                dataStream.Write(byteArray, 0, byteArray.Length);
-                dataStream.Close();
+            //     Stream dataStream = tRequest.GetRequestStream();
+            //     dataStream.Write(byteArray, 0, byteArray.Length);
+            //     dataStream.Close();
 
-                WebResponse tResponse = tRequest.GetResponse();
+            //     WebResponse tResponse = tRequest.GetResponse();
 
-                dataStream = tResponse.GetResponseStream();
+            //     dataStream = tResponse.GetResponseStream();
 
-                StreamReader tReader = new StreamReader(dataStream);
+            //     StreamReader tReader = new StreamReader(dataStream);
 
-                String sResponseFromServer = tReader.ReadToEnd();
+            //     String sResponseFromServer = tReader.ReadToEnd();
 
-                Console.WriteLine("Respuesta server -> " + sResponseFromServer);
-                tReader.Close();
-                dataStream.Close();
-                tResponse.Close();
-            }
+            //     Console.WriteLine("Respuesta server -> " + sResponseFromServer);
+            //     tReader.Close();
+            //     dataStream.Close();
+            //     tResponse.Close();
+            // }
 
         static void SendAndroid() {
             // Configuration
             //var config = new GcmConfiguration ("GCM-SENDER-ID", "AUTH-TOKEN", null);
-            var config = new GcmConfiguration(SENDER_ID, applicationID, null);
+            var config = new GcmConfiguration(applicationID);
             config.GcmUrl = firebaseUrl;
 
             // Create a new broker
@@ -138,8 +138,12 @@ namespace pushSharpTest
             // Start the broker
             gcmBroker.Start ();
 
-            var MY_REGISTRATION_IDS = new string[1];
+            var MY_REGISTRATION_IDS = new string[2];
+            // SOBRE ESCRIBO EL PRIMER DEVICEID
+            // SIMULADOR
+            DeviceID = "eQvAo4vE-yo:APA91bGdtBqKAFJuBD0HP6SwfSq8u38Y51SSfrbVteqAVHG6wXfc7fVHFuU9pDj0igNr7b55mBo1iK68H5VQK5TFipLgQKd9CeJ6JnBhV68doN3oxMJpExt4n_sZGx02J6nI19zf3-Nf";
             MY_REGISTRATION_IDS[0] = DeviceID;
+            MY_REGISTRATION_IDS[1] = "e3Gq20HUiso:APA91bEI8hqfVDI3Rq-RXPUk2oM2hYD0CJgMJzX2SS9bJkm37vTDNLCMx9moKLTrXKjCw1SFDjKEW8QzkgLh-sUrZI4Qw5MMxNvEoORH_FGWXgt58g09eQ40deBgzwbbKj-RkZRgfO4z";
 
             foreach (var deviceId in MY_REGISTRATION_IDS) {
                 // Queue a notification to send
@@ -148,7 +152,7 @@ namespace pushSharpTest
                     RegistrationIds = new List<string> { 
                         deviceId
                     },
-                    Data = JObject.Parse ("{ \"somekey\" : \"somevalue\" }")
+                    Data = JObject.Parse ("{ \"message\" : \"desde PushSharp\" }")
                 });
             }
             
