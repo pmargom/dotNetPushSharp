@@ -22,7 +22,7 @@ namespace pushSharpTest
         
         static void Main(string[] args)
         {
-            // SendiOS();
+            SendiOS();
             SendAndroid();
             // send();
         }
@@ -152,6 +152,7 @@ namespace pushSharpTest
                     RegistrationIds = new List<string> { 
                         deviceId
                     },
+                    Notification = JObject.Parse ("{ \"body\" : \"Atención, se ha desviado de su rumbo!\", \"title\" : \"TrackIT\", \"sound\" : \"default\" }"),
                     Data = JObject.Parse ("{ \"message\" : \"desde PushSharp\" }")
                 });
             }
